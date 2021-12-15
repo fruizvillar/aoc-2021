@@ -20,7 +20,7 @@ class Puzzle(ABC):
     @classmethod
     def parse_file(cls, f):
         with f.open() as f_in:
-            yield from (cls.LineType(line) for line in f_in.readlines())
+            yield from (cls.LineType(line.strip()) for line in f_in.readlines())
 
     def __init__(self):
         self.inputs = list(self.get_inputs())
