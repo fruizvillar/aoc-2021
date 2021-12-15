@@ -1,43 +1,48 @@
-from pathlib import Path
+from common import Puzzle
 
-INPUTS = Path('inputs')
 
-DAY = 1
+class Day01(Puzzle):
+    N = 1
+    LineType = int
 
-f = INPUTS / f'day_{DAY:02d}.txt'
+    Test = False
 
-GOAL = 2020
-array = []
+    def solve(self, *args, **kwargs):
+        print('Inputs: ', self.inputs)
 
-found1 = False
-found2 = False
+        print('\nPART ONE\n')
+        averaged = self.moving_average(w=1)
+        print('Averaged: ', averaged)
+        self.get_n_increases(averaged)
 
-for line in f.open().readlines():
+        print('\nPART TWO\n')
 
-    n = int(line)
+        averaged = self.moving_average(w=3)
+        print('Averaged: ', averaged)
+        self.get_n_increases(averaged)
 
-    for a1 in array:
+    def moving_average(self, w):
+        vectors = []
+        for i_0 in range(w):
 
-        # Part 1
-        if not found1:
-            if a1 + n == GOAL:
-                print(f'Found (part 1), {n} + {a1}')
-                print(f'{n} * {a1}= {n * a1}')
-                found1 = True
+            if i_f := - (w - i_0 - 1):
+                v = self.inputs[i_0:i_f]
+            else:
+                v = self.inputs
+            vectors.append(v)
 
-        # Part 2
-        if not found2:
-            for a2 in array:
-                if a1 + a2 + n == GOAL:
-                    print(f'Found (part 2), {n} + {a1} + {a2}')
-                    print(f'{n} * {a1} * {a2} = {n * a1 * a2}')
-                    found2 = True
-                    break
+        return [sum(vi) for vi in zip(*vectors)]
 
-        if found1 and found2:
-            break
-    else:
-        array.append(n)
+    @staticmethod
+    def get_n_increases(averaged):
+        diff = [x - y for x, y in zip(averaged[1:], averaged[:-1])]
+        print('Diff: ', diff)
 
-    if found1 and found2:
-        break
+        incr = [x > 0 for x in diff]
+        print('Incr: ', incr)
+
+        print('# incr.: ', sum(incr))
+
+
+if __name__ == '__main__':
+    Day01()()
