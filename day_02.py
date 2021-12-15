@@ -1,47 +1,51 @@
-from pathlib import Path
-
-INPUTS = Path('inputs')
-
-DAY = 2
-
-f = INPUTS / f'day_{DAY:02d}.txt'
+from common import Puzzle, Coordinates, Direction
 
 
-def main():
-    count_ok_1 = 0
-    count_ok_2 = 0
+class Day02(Puzzle):
+    N = 2
 
-    for line in f.open().readlines():
-        n_0, n_1, letter, passwd = parse_line_info(line)
+    Test = False
 
-        if check_pass_valid_rule1(n_0, n_1, letter, passwd):
-            count_ok_1 += 1
-        if check_pass_valid_rule2(n_0, n_1, letter, passwd):
-            count_ok_2 += 1
+    Aim = 0
 
-    print(f'{count_ok_1} passwords were valid according to rule 1')
-    print(f'{count_ok_2} passwords were valid according to rule 2')
+    def solve(self, *args, **kwargs):
+        typed_inputs = [(x, int(y)) for x, y in [z.split() for z in self.inputs]]
+        print(*typed_inputs)
 
+        pos = Coordinates()
 
-def parse_line_info(line: str):
-    interval, letter_colon, passwd = line.split(' ')
-    i_i, i_f = interval.split('-')
-    return int(i_i), int(i_f), letter_colon[0], passwd[:-1]
+        print(pos)
+        for movement in typed_inputs:
+            pos += self._parse_mov(*movement)
+            print(pos)
 
+        pos = Coordinates()
 
-def check_pass_valid_rule1(n_min, n_max, letter, passwd):
-    n = passwd.count(letter)
-    ok = n_min <= n <= n_max
-    # print(f"N of '{letter}' in {passwd:>20s} = {n:2}. || {n_min:2} <= {n:2} <= {n_max:2} ?? -> {ok}")
-    return ok
+        print('PART 2')
+        for movement in typed_inputs:
+            pos += self._parse_aimed_mov(*movement)
+            print(pos)
 
+    def _parse_aimed_mov(self, direction, amount):
+        if direction == 'forward':
 
-def check_pass_valid_rule2(n0, n1, letter, passwd):
-    ok = (passwd[n0 - 1] == letter) ^ (passwd[n1 - 1] == letter)
-    # print(f" Chars {n0:2} ^ {n1:2} of {passwd:>20s} is '{letter}' ?? -> {ok}")
+            val = Direction.FORWARD.value * amount
+            val += Direction.DOWN.value * self.Aim * amount
 
-    return ok
+            return val
+
+        elif direction == 'down':
+            self.Aim += amount
+        else:
+            self.Aim -= amount
+
+        return Coordinates()  # We don't move so we return 0
+
+    @staticmethod
+    def _parse_mov(direction, amount):
+        val = Direction[direction.upper()].value * amount
+        return val
 
 
 if __name__ == '__main__':
-    main()
+    Day02()()

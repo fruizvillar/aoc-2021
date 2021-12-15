@@ -1,4 +1,5 @@
 from abc import ABC
+from enum import Enum
 from pathlib import Path
 
 INPUTS = Path.home() / 'PycharmProjects' / 'aoc-2021' / 'inputs'
@@ -29,3 +30,28 @@ class Puzzle(ABC):
 
     def solve(self, *args, **kwargs):
         raise NotImplementedError
+
+
+class Coordinates:
+    """ X, Y coordinates """
+    def __init__(self, x=0, y=0):
+        self.x, self.y = x, y
+
+    @property
+    def depth(self):
+        return -self.y
+
+    def __add__(self, other):
+        return Coordinates(self.x + other.x, self.y + other.y)
+
+    def __mul__(self, other):
+        return Coordinates(self.x * other, self.y * other)
+
+    def __str__(self):
+        return f'Coordinates (x={self.x}, y={self.y}) (val = {self.depth * self.x})'
+
+
+class Direction(Enum):
+    FORWARD = Coordinates(1)
+    DOWN = Coordinates(y=-1)
+    UP = Coordinates(y=1)
