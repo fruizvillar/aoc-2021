@@ -1,7 +1,7 @@
 from common import Puzzle, Coordinates, Direction
 
 
-class Day02(Puzzle):
+class DailyPuzzle(Puzzle):
     N = 2
 
     Test = False
@@ -48,4 +48,4 @@ class Day02(Puzzle):
 
 
 if __name__ == '__main__':
-    Day02()()
+    DailyPuzzle()()

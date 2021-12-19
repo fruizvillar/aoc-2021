@@ -1,7 +1,7 @@
 from common import Puzzle
 
 
-class Day01(Puzzle):
+class DailyPuzzle(Puzzle):
     N = 1
     LineType = int
 
@@ -45,4 +45,4 @@ class Day01(Puzzle):
 
 
 if __name__ == '__main__':
-    Day01()()
+    DailyPuzzle()()

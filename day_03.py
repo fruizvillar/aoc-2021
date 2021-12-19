@@ -1,7 +1,7 @@
 from common import Puzzle
 
 
-class Day03(Puzzle):
+class DailyPuzzle(Puzzle):
     N = 3
 
     Test = False
@@ -111,4 +111,4 @@ class Day03(Puzzle):
 
 
 if __name__ == '__main__':
-    Day03()()
+    DailyPuzzle()()
